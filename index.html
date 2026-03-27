@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AcademiX AI — Ваш научный ассистент</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+  <nav class="flex justify-between items-center px-10 py-6 bg-white shadow-sm sticky top-0 z-50">
+    <div class="text-2xl font-bold text-indigo-600 italic">
+      AcademiX <span class="text-slate-800 underline decoration-indigo-500">AI</span>
+    </div>
+
+    <div class="flex items-center gap-8 font-medium">
+      <a href="#features" class="hover:text-indigo-600 transition">Возможности</a>
+      <a href="#demo" class="hover:text-indigo-600 transition">Демо-чат</a>
+
+      <div class="flex items-center gap-3">
+        <button onclick="openAuth('login')" id="login-btn"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+          Войти
+        </button>
+
+        <button onclick="logout()" id="logout-btn"
+                class="hidden border-2 border-slate-200 px-4 py-2 rounded-lg hover:bg-slate-100 transition">
+          Выйти
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="max-w-7xl mx-auto px-6 py-20 text-center">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+      Интеллектуальная подготовка <br>
+      <span class="text-indigo-600">научных материалов</span>
+    </h1>
+    <p class="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
+      От генерации гипотез до оформления библиографии по ГОСТу. Работайте с данными, а не с форматированием.
+    </p>
+    <div class="flex justify-center gap-4">
+      <a href="#demo" class="bg-slate-900 text-white px-8 py-4 rounded-lg font-bold hover:scale-105 transition">
+        Начать исследование
+      </a>
+      <button class="border-2 border-slate-200 px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition">
+        Узнать больше
+      </button>
+    </div>
+  </header>
+
+  <section id="demo" class="max-w-5xl mx-auto px-6 mb-24">
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+
+      <div class="bg-slate-900 p-4 text-white flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+          <span class="text-sm font-mono">Academic_Core_v1.0.exe</span>
+        </div>
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+
+      <div class="h-[400px] p-6 overflow-y-auto bg-slate-50 flex flex-col gap-4" id="chat-box">
+        <div class="flex gap-3 max-w-[80%]">
+          <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white shrink-0">
+            <i class="fas fa-robot text-xs"></i>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-sm">
+            Здравствуйте! Я готов помочь с вашим исследованием. Войдите/зарегистрируйтесь и загрузите PDF или введите тему.
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-200 bg-white">
+        <div class="flex gap-4">
+          <label class="cursor-pointer bg-slate-100 p-3 rounded-lg hover:bg-slate-200 transition">
+            <i class="fas fa-paperclip text-slate-500"></i>
+            <input type="file" id="file-input" class="hidden" accept=".pdf">
+          </label>
+
+          <input type="text" id="user-input" placeholder="Введите тему или загрузите PDF..."
+                 class="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg border border-slate-200">
+
+          <button onclick="sendMessage()" class="bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+
+        <div id="file-name" class="text-xs text-indigo-600 mt-2 px-14"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="bg-indigo-50 py-20 px-6">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+      <div class="bg-white p-8 rounded-xl shadow-sm">
+        <div class="text-indigo-600 text-3xl mb-4"><i class="fas fa-microscope"></i></div>
+        <h3 class="text-xl font-bold mb-2">Глубокий анализ</h3>
+        <p class="text-slate-600">ИИ анализирует материал и помогает увидеть ключевые идеи и слабые места.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-sm">
+        <div class="text-indigo-600 text-3xl mb-4"><i class="fas fa-quote-right"></i></div>
+        <h3 class="text-xl font-bold mb-2">Умные ссылки</h3>
+        <p class="text-slate-600">Подготовка библиографии и источников (можно расширить до ГОСТ/APA).</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-sm">
+        <div class="text-indigo-600 text-3xl mb-4"><i class="fa-solid fa-archway"></i></div>
+        <h3 class="text-xl font-bold mb-2">Проверка логики</h3>
+        <p class="text-slate-600">ИИ подскажет, если выводы не соответствуют целям или методологии.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-10 text-center text-slate-400 text-sm">
+    &copy; 2026 AcademiX AI. Разработано для будущих ученых.
+  </footer>
+
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[999]">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 id="auth-title" class="text-xl font-bold">Вход</h2>
+        <button onclick="closeAuth()" class="text-slate-500 hover:text-slate-900">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <input id="auth-username"
+               class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none"
+               placeholder="Username">
+
+        <input id="auth-password" type="password"
+               class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none"
+               placeholder="Password">
+
+        <div id="auth-error" class="text-sm text-red-600 hidden"></div>
+
+        <button onclick="submitAuth()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:opacity-90">
+          Продолжить
+        </button>
+
+        <div class="text-sm text-slate-600 text-center">
+          <span id="auth-switch-text">Нет аккаунта?</span>
+          <button onclick="switchAuthMode()" class="text-indigo-600 font-semibold hover:underline">
+            Регистрация
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = "http://127.0.0.1:8000";
+
+    const fileInput = document.getElementById('file-input');
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
+
+    fileInput.onchange = () => {
+      document.getElementById('file-name').innerText =
+        fileInput.files[0] ? "Выбран файл: " + fileInput.files[0].name : "";
+    };
+
+    // ==============
+    // AUTH
+    // ==============
+
+    let authMode = "login"; // login | register
+
+    function setUIAuthed(isAuthed) {
+      document.getElementById("logout-btn").classList.toggle("hidden", !isAuthed);
+      document.getElementById("login-btn").classList.toggle("hidden", isAuthed);
+    }
+
+    function openAuth(mode) {
+      authMode = mode;
+      document.getElementById("auth-modal").classList.remove("hidden");
+      document.getElementById("auth-modal").classList.add("flex");
+      renderAuthMode();
+      hideAuthError();
+    }
+
+    function closeAuth() {
+      document.getElementById("auth-modal").classList.add("hidden");
+      document.getElementById("auth-modal").classList.remove("flex");
+    }
+
+    function renderAuthMode() {
+      const title = document.getElementById("auth-title");
+      const switchText = document.getElementById("auth-switch-text");
+      const switchBtn = document.querySelector("#auth-modal button[onclick='switchAuthMode()']");
+
+      if (authMode === "login") {
+        title.innerText = "Вход";
+        switchText.innerText = "Нет аккаунта?";
+        switchBtn.innerText = "Регистрация";
+      } else {
+        title.innerText = "Регистрация";
+        switchText.innerText = "Уже есть аккаунт?";
+        switchBtn.innerText = "Войти";
+      }
+    }
+
+    function switchAuthMode() {
+      authMode = authMode === "login" ? "register" : "login";
+      renderAuthMode();
+      hideAuthError();
+    }
+
+    function showAuthError(msg) {
+      const el = document.getElementById("auth-error");
+      el.innerText = msg;
+      el.classList.remove("hidden");
+    }
+
+    function hideAuthError() {
+      const el = document.getElementById("auth-error");
+      el.classList.add("hidden");
+      el.innerText = "";
+    }
+
+    async function submitAuth() {
+      hideAuthError();
+
+      const username = document.getElementById("auth-username").value.trim();
+      const password = document.getElementById("auth-password").value;
+
+      if (!username || !password) {
+        showAuthError("Введите username и пароль.");
+        return;
+      }
+
+      const endpoint = authMode === "login" ? "/auth/login" : "/auth/register";
+
+      try {
+        const res = await fetch(API + endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showAuthError(data.detail || "Ошибка авторизации.");
+          return;
+        }
+
+        localStorage.setItem("token", data.token);
+        closeAuth();
+        setUIAuthed(true);
+
+      } catch (e) {
+        showAuthError("Сервер недоступен. Запусти backend.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      setUIAuthed(false);
+    }
+
+    // init auth ui
+    setUIAuthed(!!localStorage.getItem("token"));
+
+    // ==============
+    // CHAT
+    // ==============
+
+    async function sendMessage() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        openAuth("login");
+        return;
+      }
+
+      const text = userInput.value;
+      const file = fileInput.files[0];
+      if (!text && !file) return;
+
+      const userMsg = text || `Файл: ${file.name}`;
+      chatBox.innerHTML += `
+        <div class="text-right text-sm bg-indigo-100 p-3 rounded-lg ml-auto max-w-[80%] mb-4 whitespace-pre-wrap">
+          ${escapeHtml(userMsg)}
+        </div>
+      `;
+
+      userInput.value = "";
+      fileInput.value = "";
+      document.getElementById('file-name').innerText = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const formData = new FormData();
+      if (text) formData.append('text', text);
+      if (file) formData.append('file', file);
+
+      try {
+        const response = await fetch(API + '/chat', {
+          method: 'POST',
+          headers: { "Authorization": "Bearer " + token },
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // если токен умер — просим войти
+          if (response.status === 401) {
+            logout();
+            openAuth("login");
+          }
+          throw new Error(data.detail || "Ошибка ответа сервера");
+        }
+
+        chatBox.innerHTML += `
+          <div class="flex gap-3 max-w-[80%] mb-4">
+            <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white shrink-0">
+              <i class="fas fa-robot text-xs"></i>
+            </div>
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-sm whitespace-pre-wrap">
+              ${escapeHtml(data.reply)}
+            </div>
+          </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+      } catch (err) {
+        alert("Ошибка: " + err.message);
+      }
+    }
+
+    // защита от вставки HTML в чат
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+
+</body>
+</html>
